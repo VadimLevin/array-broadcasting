@@ -1,0 +1,82 @@
+﻿---
+BasedOnStyle: LLVM
+AccessModifierOffset: -4
+AlignAfterOpenBracket: Align
+AlignConsecutiveMacros: None
+AlignConsecutiveAssignments: None
+AlignConsecutiveDeclarations: None
+AlignEscapedNewlines: Left
+AlignOperands: false
+AlignTrailingComments: false
+AllowShortBlocksOnASingleLine: Empty
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLambdasOnASingleLine: None
+AllowShortLoopsOnASingleLine: false
+AlwaysBreakBeforeMultilineStrings: false
+BinPackArguments: false
+BinPackParameters: false
+BreakAfterJavaFieldAnnotations: true
+BreakBeforeBinaryOperators: All
+BreakBeforeBraces: Attach
+BreakBeforeTernaryOperators: true
+BreakConstructorInitializers: BeforeColon
+BreakInheritanceList: BeforeColon
+ColumnLimit: 90
+CommentPragmas: '^ IWYU pragma:'
+CompactNamespaces: false
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
+ConstructorInitializerIndentWidth: 4
+ContinuationIndentWidth: 4
+Cpp11BracedListStyle: true
+DerivePointerAlignment: false
+FixNamespaceComments: true
+IncludeBlocks: Regroup
+IndentCaseLabels: true
+IndentPPDirectives: BeforeHash
+IndentWidth: 4
+IndentWrappedFunctionNames: false
+KeepEmptyLinesAtTheStartOfBlocks: false
+PenaltyBreakBeforeFirstCallParameter: 50
+PenaltyBreakComment: 200
+PenaltyBreakString: 300
+PenaltyExcessCharacter: 100000
+PenaltyReturnTypeOnItsOwnLine: 100
+PointerAlignment: Left
+SpaceAfterTemplateKeyword: true
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeCpp11BracedList: false
+SpaceBeforeCtorInitializerColon: true
+SpaceBeforeInheritanceColon: true
+SpaceBeforeParens: ControlStatements
+SpaceBeforeRangeBasedForLoopColon: true
+SortUsingDeclarations: false
+SpaceAfterCStyleCast: false
+SpaceAfterLogicalNot: false
+TabWidth: 4
+UseTab: Never
+---
+Language: Cpp
+SortIncludes: CaseInsensitive
+IncludeCategories:
+  # System headers
+  - Regex: '^<[a-z_]+>'
+    Priority: 1
+  # Top level headers without sub-folders
+  - Regex: '^<[a-z_]+.h>'
+    Priority: 2
+  # All other headers starting with "
+  - Regex: '^"'
+    Priority: 3
+  # Everything else
+  - Regex: '.*'
+    Priority: 10
+Standard: Latest
+AlwaysBreakTemplateDeclarations: Yes
+# ---
+# Language: ObjC
+# ObjCBlockIndentWidth: 4
+# ObjCSpaceAfterProperty: true
+# ObjCSpaceBeforeProtocolList: true
+...

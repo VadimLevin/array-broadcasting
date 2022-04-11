@@ -1,0 +1,4 @@
+pybind11[global]
+autopep8
+numpy
+pytest
