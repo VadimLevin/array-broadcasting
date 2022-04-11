@@ -2,13 +2,13 @@
 BasedOnStyle: LLVM
 AccessModifierOffset: -4
 AlignAfterOpenBracket: Align
-AlignConsecutiveMacros: None
-AlignConsecutiveAssignments: None
-AlignConsecutiveDeclarations: None
+# AlignConsecutiveMacros: None
+AlignConsecutiveAssignments: false
+AlignConsecutiveDeclarations: false
 AlignEscapedNewlines: Left
 AlignOperands: false
 AlignTrailingComments: false
-AllowShortBlocksOnASingleLine: Empty
+AllowShortBlocksOnASingleLine: false
 AllowShortCaseLabelsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: None
 AllowShortIfStatementsOnASingleLine: Never
@@ -58,7 +58,7 @@ TabWidth: 4
 UseTab: Never
 ---
 Language: Cpp
-SortIncludes: CaseInsensitive
+SortIncludes: true
 IncludeCategories:
   # System headers
   - Regex: '^<[a-z_]+>'
@@ -72,7 +72,7 @@ IncludeCategories:
   # Everything else
   - Regex: '.*'
     Priority: 10
-Standard: Latest
+Standard: C++11
 AlwaysBreakTemplateDeclarations: Yes
 # ---
 # Language: ObjC
