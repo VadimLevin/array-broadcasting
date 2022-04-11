@@ -28,3 +28,9 @@ set_target_properties(nope
         CXX_STANDARD_REQUIRED ON
 )
 
+include(cmake/warnings_definition.cmake)
+
+target_compile_options(nope
+    PRIVATE
+        ${project_cxx_warnings}
+)

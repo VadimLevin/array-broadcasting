@@ -35,8 +35,8 @@ template <class T> struct NDArray {
     const size_t ndims = dims();
     strides.reserve(ndims);
     for (size_t i = 0, dims_bytes = total_bytes; i < ndims; ++i) {
-      dims_bytes /= shape[i];
-      strides.push_back(dims_bytes);
+      dims_bytes /= static_cast<size_t>(shape[i]);
+      strides.push_back(static_cast<ssize_t>(dims_bytes));
     }
   }
 
@@ -113,8 +113,8 @@ public:
                   const std::vector<ssize_t> &strides)
       : ndindex_(shape.size()), shape_{shape.data()}, strides_{strides.data()},
         base_{reinterpret_cast<const std::byte *>(base)} {
-            std::cerr << "Dims: " << dims_ << '\n';
-        }
+    std::cerr << "Dims: " << dims_ << '\n';
+  }
 
   reference_type operator*() const {
     return *reinterpret_cast<pointer_type>(ptr_);
@@ -156,38 +156,9 @@ private:
   const std::byte *ptr_{base_};
 };
 
-std::vector<ssize_t> calculateOutputShape(const std::vector<ssize_t> &a_shape,
-                                          const std::vector<ssize_t> &b_shape) {
-  using VectorRef = const std::vector<ssize_t> &;
-
-  const auto &[smallest_shape, largest_shape] =
-      [&a_shape, &b_shape]() -> std::pair<VectorRef, VectorRef> {
-    if (a_shape.size() > b_shape.size()) {
-      return {b_shape, a_shape};
-    }
-    return {a_shape, b_shape};
-  }();
-
-  std::vector<ssize_t> expanded_shape(largest_shape.size());
-  for (size_t i = 0; i < largest_shape.size() - smallest_shape.size(); ++i) {
-    expanded_shape[i] = 1;
-  }
-  expanded_shape.insert(expanded_shape.begin() + smallest_shape.size(),
-                        smallest_shape.begin(), smallest_shape.end());
-
-  std::vector<ssize_t> output_shape(largest_shape.size());
-  const ssize_t dims = static_cast<ssize_t>(output_shape.size() - 1);
-  for (ssize_t i = dims; i >= 0; ++i) {
-    output_shape[i] = std::max(largest_shape[static_cast<size_t>(i)],
-                               expanded_shape[static_cast<size_t>(i)]);
-  }
-
-  return output_shape;
-}
-
 template <class OutputIt, class InputIt1, class InputIt2, class Operation>
 void applyElemwise(OutputIt out_first, OutputIt out_last, InputIt1 first1,
-                   InputIt2 first2, Operation&& op) {
+                   InputIt2 first2, Operation &&op) {
   for (; out_first != out_last; ++first1, ++first2) {
     *out_first++ = op(*first1, *first2);
   }
@@ -198,7 +169,7 @@ NDArray<T> applyElemwise(const T *l_data, const std::vector<ssize_t> &l_shape,
                          const std::vector<ssize_t> &l_strides, const T *r_data,
                          const std::vector<ssize_t> &r_shape,
                          const std::vector<ssize_t> &r_strides,
-                         Operation&& op) {
+                         Operation &&op) {
   const ssize_t l_dims = static_cast<ssize_t>(l_shape.size());
   const ssize_t r_dims = static_cast<ssize_t>(r_shape.size());
   const ssize_t output_dims = std::max(l_dims, r_dims);
@@ -211,18 +182,18 @@ NDArray<T> applyElemwise(const T *l_data, const std::vector<ssize_t> &l_shape,
     ssize_t l_dim = 1;
     ssize_t l_stride = 0;
     if (l >= 0) {
-        l_dim = l_shape[l];
-        if (l_dim > 1) {
-            l_stride = l_strides[l];
-        }
+      l_dim = l_shape[static_cast<size_t>(l)];
+      if (l_dim > 1) {
+        l_stride = l_strides[static_cast<size_t>(l)];
+      }
     }
     ssize_t r_dim = 1;
     ssize_t r_stride = 0;
     if (r >= 0) {
-        r_dim = r_shape[r];
-        if (r_dim > 1) {
-            r_stride = r_strides[r];
-        }
+      r_dim = r_shape[static_cast<size_t>(r)];
+      if (r_dim > 1) {
+        r_stride = r_strides[static_cast<size_t>(r)];
+      }
     }
     broadcasted_shape[static_cast<size_t>(i)] = std::max(l_dim, r_dim);
     broadcasted_l_strides[static_cast<size_t>(i)] = l_stride;
@@ -252,10 +223,11 @@ py::array arrayElemwiseOp(const py::array &lhs, const py::array &rhs) {
 
 #define TYPE_DISPATCH(T)                                                       \
   if (common_dtype.equal(py::dtype::of<T>())) {                                \
-    return applyElemwise(                                                      \
-               static_cast<T *>(lhs_buffer_info.ptr), lhs_buffer_info.shape,   \
-               lhs_buffer_info.strides, static_cast<T *>(rhs_buffer_info.ptr), \
-               rhs_buffer_info.shape, rhs_buffer_info.strides, OperationType{})  \
+    return applyElemwise(static_cast<T *>(lhs_buffer_info.ptr),                \
+                         lhs_buffer_info.shape, lhs_buffer_info.strides,       \
+                         static_cast<T *>(rhs_buffer_info.ptr),                \
+                         rhs_buffer_info.shape, rhs_buffer_info.strides,       \
+                         OperationType{})                                      \
         .numpy();                                                              \
   }
 
