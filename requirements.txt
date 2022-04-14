@@ -2,3 +2,4 @@ pybind11[global]
 autopep8
 numpy
 pytest
+pytest-benchmark

@@ -2,17 +2,20 @@ import pytest
 import numpy as np
 from nope import elemwise_sum, elemwise_mul
 
+
 def elementwise_sum_op(a, b):
     expected = a + b
     actual = elemwise_sum(a, b)
     np.testing.assert_allclose(actual, expected,
-                               err_msg=f"Test failed for input:\n{a=}\n{b=}")
+                               err_msg=f"Test failed for input:\na={a}\nb={b}")
+
 
 def elementwise_mul_op(a, b):
     expected = a * b
     actual = elemwise_mul(a, b)
     np.testing.assert_allclose(actual, expected,
-                               err_msg=f"Test failed for input:\n{a=}\n{b=}")
+                               err_msg=f"Test failed for input:\na={a}\nb={b}")
+
 
 OPERATIONS_SET = (elementwise_sum_op, elementwise_mul_op)
 
