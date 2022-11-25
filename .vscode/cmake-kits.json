@@ -1,0 +1,10 @@
+[
+    {
+        "name": "Default Clang in virtualenv",
+        "compilers": {
+            "C": "/usr/bin/clang",
+            "CXX": "/usr/bin/clang++"
+        },
+        "environmentSetupScript": "${workspaceFolder}/venv/bin/activate"
+    }
+]
