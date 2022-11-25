@@ -1,5 +1,8 @@
-pybind11[global]
-autopep8
-numpy
-pytest
-pytest-benchmark
+pybind11[global]==2.10.1
+autopep8==2.0.0
+numpy==1.23.5
+pytest==7.2.0
+pytest-benchmark==4.0.0
+mypy==0.991
+mypy-extensions==0.4.3
+flake8==6.0.0
