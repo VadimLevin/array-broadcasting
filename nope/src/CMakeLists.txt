@@ -1,0 +1,5 @@
+target_sources(nope
+    PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}/broadcasting.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/module.cpp
+)

@@ -19,7 +19,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 
 find_package(pybind11 REQUIRED)
 
-pybind11_add_module(nope module.cpp)
+pybind11_add_module(nope)
 
 set_target_properties(nope
     PROPERTIES
@@ -34,3 +34,10 @@ target_compile_options(nope
     PRIVATE
         ${project_cxx_warnings}
 )
+
+target_include_directories(nope
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>
+)
+
+add_subdirectory(src)
