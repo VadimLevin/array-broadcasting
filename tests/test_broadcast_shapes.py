@@ -3,7 +3,7 @@ from typing import Tuple
 import pytest
 import numpy as np
 
-from nope import broadcast_shapes
+import nope
 
 
 BROADCASTABLE_SHAPES = (
@@ -35,7 +35,7 @@ def _shapes_to_name(shapes: Tuple[Tuple[int, ...], ...]) -> str:
 @pytest.mark.parametrize("shapes", BROADCASTABLE_SHAPES, ids=_shapes_to_name)
 def test_broadcastable_shapes(shapes: tuple) -> None:
     expected_out_shape = np.broadcast_shapes(*shapes)
-    actual_out_shape = tuple(broadcast_shapes(shapes))
+    actual_out_shape = tuple(nope.broadcast_shapes(shapes))
     assert expected_out_shape == actual_out_shape
 
 
@@ -43,4 +43,4 @@ def test_broadcastable_shapes(shapes: tuple) -> None:
                          ids=_shapes_to_name)
 def test_not_broadcastable_shapes(shapes: tuple) -> None:
     with pytest.raises(ValueError):
-        broadcast_shapes(shapes)
+        nope.broadcast_shapes(shapes)

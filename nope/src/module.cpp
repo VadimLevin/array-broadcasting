@@ -5,11 +5,13 @@
 #include <stdexcept>
 #include <type_traits>
 
+#include <pybind11/detail/common.h>
 #include <pybind11/numpy.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
 #include "nope/broadcasting.h"
+#include "nope/tensor_data_type.h"
 
 namespace py = pybind11;
 
@@ -248,6 +250,32 @@ namespace py = pybind11;
 //     py::pybind11_fail("Unsupported dtype");
 // }
 
+void registerTensorDataType(py::module_& module) {
+    py::class_<nope::TensorDataType>(module, "TensorDataType")
+        .def_property_readonly("value", &nope::TensorDataType::typeId)
+        .def_property_readonly("size", &nope::TensorDataType::size)
+        .def("__str__", [](const nope::TensorDataType& dtype) {
+            using std::to_string;
+
+            return to_string(dtype);
+        });
+
+#define DEFINE_TENSOR_DATA_TYPE_AS_MODULE_CONSTANT(name, value) \
+    module.attr(name) = nope::TensorDataType(nope::TensorDataType::value)
+
+    DEFINE_TENSOR_DATA_TYPE_AS_MODULE_CONSTANT("int8", Int8);
+    DEFINE_TENSOR_DATA_TYPE_AS_MODULE_CONSTANT("uint8", UInt8);
+    DEFINE_TENSOR_DATA_TYPE_AS_MODULE_CONSTANT("int16", Int16);
+    DEFINE_TENSOR_DATA_TYPE_AS_MODULE_CONSTANT("uint16", UInt16);
+    DEFINE_TENSOR_DATA_TYPE_AS_MODULE_CONSTANT("int32", Int32);
+    DEFINE_TENSOR_DATA_TYPE_AS_MODULE_CONSTANT("uint32", UInt32);
+    DEFINE_TENSOR_DATA_TYPE_AS_MODULE_CONSTANT("float32", Float32);
+    DEFINE_TENSOR_DATA_TYPE_AS_MODULE_CONSTANT("float64", Float64);
+
+#undef DEFINE_TENSOR_DATA_TYPE_AS_MODULE_CONSTANT
+
+}
+
 PYBIND11_MODULE(nope, nope_module) {
     nope_module.def("broadcast_shapes",
                     [](const std::vector<std::vector<int64_t>>& shapes) -> std::vector<int64_t>{
@@ -258,4 +286,5 @@ PYBIND11_MODULE(nope, nope_module) {
                         return out_shape;
                     },
                     py::arg("input_shapes"));
+    registerTensorDataType(nope_module);
 }
