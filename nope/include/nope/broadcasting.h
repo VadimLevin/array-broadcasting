@@ -31,7 +31,7 @@ bool broadcastShapes(const int64_t* const* in_shapes,
  *      empty otherwise.
  */
 template <class... Shapes>
-std::vector<int64_t> broadcastShapes(const Shapes&... shapes) {
+std::vector<int64_t> broadcastShapes(const Shapes&... shapes) noexcept {
     static constexpr size_t kNInputs = sizeof...(Shapes);
 
     const std::array<const int64_t*, kNInputs> input_shapes_ptr{shapes.data()...};
@@ -68,7 +68,7 @@ std::vector<int64_t> broadcastShapes(const Shapes&... shapes) {
  * \return \a shape converted to \a std::vector<int64_t>
  */
 template <class Shape>
-std::vector<int64_t> broadcastShapes(const Shape& shape) {
+std::vector<int64_t> broadcastShapes(const Shape& shape) noexcept {
     return {shape.data(), shape.data() + shape.size()};
 }
 

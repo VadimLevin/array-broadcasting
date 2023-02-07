@@ -5,13 +5,14 @@
 #include <stdexcept>
 #include <type_traits>
 
+#include "nope/broadcasting.h"
+#include "nope/is_contiguous.h"
+#include "nope/tensor_data_type.h"
+
 #include <pybind11/detail/common.h>
 #include <pybind11/numpy.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
-
-#include "nope/broadcasting.h"
-#include "nope/tensor_data_type.h"
 
 namespace py = pybind11;
 
@@ -33,7 +34,8 @@ namespace py = pybind11;
 //     std::vector<ssize_t> shape;
 //     std::vector<ssize_t> strides;
 
-//     explicit NDArray(std::vector<ssize_t> shape_descr) : shape{std::move(shape_descr)} {
+//     explicit NDArray(std::vector<ssize_t> shape_descr) : shape{std::move(shape_descr)}
+//     {
 //         const size_t total_bytes = this->total_bytes();
 //         data = std::make_unique<T[]>(total_bytes / sizeof(T));
 //         const size_t ndims = dims();
@@ -84,7 +86,6 @@ namespace py = pybind11;
 //     return stream << "NDArray(type=" << typeid(T).name() << ", shape=" << ndarray.shape
 //                   << ", strides=" << ndarray.strides << ')';
 // }
-
 
 // template <class T>
 // class NDArrayIterator {
@@ -273,18 +274,28 @@ void registerTensorDataType(py::module_& module) {
     DEFINE_TENSOR_DATA_TYPE_AS_MODULE_CONSTANT("float64", Float64);
 
 #undef DEFINE_TENSOR_DATA_TYPE_AS_MODULE_CONSTANT
-
 }
 
 PYBIND11_MODULE(nope, nope_module) {
-    nope_module.def("broadcast_shapes",
-                    [](const std::vector<std::vector<int64_t>>& shapes) -> std::vector<int64_t>{
-                        auto out_shape = nope::broadcastShapes(shapes);
-                        if (out_shape.empty()) {
-                            throw py::value_error("Failed to broadcast input shape");
-                        }
-                        return out_shape;
-                    },
-                    py::arg("input_shapes"));
+    nope_module.def(
+        "broadcast_shapes",
+        [](const std::vector<std::vector<int64_t>>& shapes) -> std::vector<int64_t> {
+            auto out_shape = nope::broadcastShapes(shapes);
+            if (out_shape.empty()) {
+                throw py::value_error("Failed to broadcast input shape");
+            }
+            return out_shape;
+        },
+        py::arg("input_shapes"));
+    nope_module.def(
+        "is_contiguous",
+        [](const std::vector<int64_t>& shape,
+           const std::vector<int64_t>& strides,
+           size_t element_size) -> bool {
+            return nope::isContiguous(shape, strides, element_size);
+        },
+        py::arg("shape"),
+        py::arg("strides"),
+        py::arg("element_size"));
     registerTensorDataType(nope_module);
 }

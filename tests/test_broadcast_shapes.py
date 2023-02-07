@@ -1,4 +1,4 @@
-from typing import Tuple
+from __future__ import annotations
 
 import pytest
 import numpy as np
@@ -28,19 +28,14 @@ NOT_BROADCASTABLE_SHAPES = (
 )
 
 
-def _shapes_to_name(shapes: Tuple[Tuple[int, ...], ...]) -> str:
-    return "__".join("_".join(map(str, shape)) for shape in shapes)
-
-
-@pytest.mark.parametrize("shapes", BROADCASTABLE_SHAPES, ids=_shapes_to_name)
-def test_broadcastable_shapes(shapes: tuple) -> None:
+@pytest.mark.parametrize("shapes", BROADCASTABLE_SHAPES, ids=str)
+def test_broadcastable_shapes(shapes: tuple[tuple[int, ...], ...]) -> None:
     expected_out_shape = np.broadcast_shapes(*shapes)
     actual_out_shape = tuple(nope.broadcast_shapes(shapes))
     assert expected_out_shape == actual_out_shape
 
 
-@pytest.mark.parametrize("shapes", NOT_BROADCASTABLE_SHAPES,
-                         ids=_shapes_to_name)
-def test_not_broadcastable_shapes(shapes: tuple) -> None:
+@pytest.mark.parametrize("shapes", NOT_BROADCASTABLE_SHAPES, ids=str)
+def test_not_broadcastable_shapes(shapes: tuple[tuple[int, ...], ...]) -> None:
     with pytest.raises(ValueError):
         nope.broadcast_shapes(shapes)
