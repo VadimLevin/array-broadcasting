@@ -43,6 +43,10 @@ public:
 
     [[nodiscard]] size_t size() const noexcept;
 
+    [[nodiscard]] int64_t ssize() const noexcept {
+        return static_cast<int64_t>(size());
+    }
+
 private:
     TypeId type_id_{TypeId::Float32};
 };
