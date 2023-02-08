@@ -9,21 +9,22 @@ void calculateEffectiveShapeAndStrides(std::vector<int64_t>& shape,
     if (shape.empty()) {
         return;
     }
-    std::vector<int64_t> effective_shape(1, shape.front());
-    std::vector<int64_t> effective_strides(1, strides.front());
+    auto shape_it = shape.begin();
+    auto strides_it = strides.begin();
     for (size_t i = 1; i < shape.size(); ++i) {
         if (shape[i] * strides[i] == strides[i - 1]) {
-            effective_shape.back() *= shape[i];
-            effective_strides.back() = strides[i];
+            *shape_it *= shape[i];
+            *strides_it = strides[i];
         } else {
-            effective_shape.push_back(shape[i]);
-            effective_strides.push_back(strides[i]);
+            ++shape_it;
+            *shape_it = shape[i];
+            ++strides_it;
         }
     }
-    if (effective_strides.size() != effective_shape.size()) {
-        effective_strides.push_back(strides.back());
+    if (strides_it != strides.end()) {
+        *strides_it = strides.back();
     }
-    shape = std::move(effective_shape);
-    strides = std::move(effective_strides);
+    shape.erase(shape_it + 1, shape.end());
+    strides.erase(strides_it + 1, strides.end());
 }
 } // namespace nope
