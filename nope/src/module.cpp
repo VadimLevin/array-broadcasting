@@ -8,8 +8,8 @@
 #include "nope/broadcasting.h"
 #include "nope/is_contiguous.h"
 #include "nope/tensor_data_type.h"
+#include "nope/shape_and_strides_manipulation.h"
 
-#include <pybind11/detail/common.h>
 #include <pybind11/numpy.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
@@ -297,5 +297,13 @@ PYBIND11_MODULE(nope, nope_module) {
         py::arg("shape"),
         py::arg("strides"),
         py::arg("element_size"));
+    nope_module.def(
+        "calculate_effective_shape_and_strides",
+        [](std::vector<int64_t> shape, std::vector<int64_t> strides) {
+            nope::calculateEffectiveShapeAndStrides(shape, strides);
+            return py::make_tuple(shape, strides);
+        },
+        py::arg("shape"),
+        py::arg("strides"));
     registerTensorDataType(nope_module);
 }

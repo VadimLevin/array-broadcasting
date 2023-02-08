@@ -28,7 +28,7 @@ bool isContiguous(const std::vector<int64_t>& shape,
                   const std::vector<int64_t>& strides,
                   size_t element_size) {
     if (shape.size() != strides.size()) {
-        throw std::length_error("Shape and strides have different length");
+        throw std::length_error("Shape and strides have different lengths");
     }
     return detail::isContiguous(shape.data(),
                                 strides.data(),

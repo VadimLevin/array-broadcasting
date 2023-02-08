@@ -1,17 +1,10 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-
 import pytest
 
 import nope
 
-
-@dataclass
-class ArrayInfo:
-    shape: tuple[int, ...]
-    strides: tuple[int, ...]
-    element_size: int
+from array_info import ArrayInfo
 
 
 CONTIGUOUS_ARRAYS_INFO = (
