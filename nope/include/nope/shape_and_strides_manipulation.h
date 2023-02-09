@@ -18,4 +18,12 @@ namespace nope {
  */
 void calculateEffectiveShapeAndStrides(std::vector<int64_t>& shape,
                                        std::vector<int64_t>& strides);
+
+std::vector<int64_t> createContiguousStrides(const std::vector<int64_t>& shape,
+                                             int64_t element_size);
+
+void fillContiguousStrides(const int64_t* shape,
+                           int64_t* strides,
+                           int64_t dims,
+                           int64_t element_size);
 } // namespace nope

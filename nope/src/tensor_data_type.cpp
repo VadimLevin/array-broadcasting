@@ -54,7 +54,7 @@ std::ostream& operator<<(std::ostream& stream, const TensorDataType& dtype) {
         DATA_TYPE_CASE(Float32);
         DATA_TYPE_CASE(Float64);
         default:
-            return stream << "<uknown>";
+            return stream << "<uknown(" << dtype.typeId() << ")>";
     }
 #undef DATA_TYPE_CASE
 }

@@ -27,4 +27,24 @@ void calculateEffectiveShapeAndStrides(std::vector<int64_t>& shape,
     shape.erase(shape_it + 1, shape.end());
     strides.erase(strides_it + 1, strides.end());
 }
+
+void fillContiguousStrides(const int64_t* shape,
+                           int64_t* strides,
+                           int64_t dims,
+                           int64_t element_size) {
+    strides[dims - 1] = element_size;
+    for (int64_t dim = dims - 2; dim >= 0; --dim) {
+        strides[dim] = strides[dim + 1] * shape[dim + 1];
+    }
+}
+
+std::vector<int64_t> createContiguousStrides(const std::vector<int64_t>& shape,
+                                             int64_t element_size) {
+    std::vector<int64_t> strides(shape.size());
+    // clang-format off
+    fillContiguousStrides(shape.data(), strides.data(),
+                         static_cast<int64_t>(shape.size()), element_size);
+    // clang-format on
+    return strides;
+}
 } // namespace nope
