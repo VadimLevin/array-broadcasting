@@ -1,0 +1,48 @@
+[project]
+name = "nope"
+version = "0.0.1"
+requires-python = ">=3.8"
+authors = [
+    { "name" = "Vadim Levin", "email" = "vadim.levin@xperience.ai" }
+]
+license = {file = "LICENSE"}
+description = "Simple Tensor implementation"
+
+# PyPi classifiers: https://pypi.org/classifiers/
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Education",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Programming Language :: C++",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8"
+]
+
+[build-system]
+requires = [
+    "wheel",
+    "setuptools >= 58",
+    "cmake >= 3.11",
+    "pybind11[global] >= 2.10.1"
+]
+build-backend = "setuptools.build_meta"
+
+[project.optional-dependencies]
+lint = [
+    "autopep8>=2.0.0",
+    "mypy>=0.991",
+    "mypy-extensions>=0.4.3",
+    "flake8>=6.0.0"
+]
+test = [
+    "pytest >= 7.2.0",
+    "pytest-benchmark >= 4.0.0",
+    "numpy >= 1.23.5"
+]
+
+[tool.setuptools]
+zip-safe = false
+package-dir = {"" = "src"}
+packages = ["nope"]

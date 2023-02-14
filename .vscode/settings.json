@@ -1,5 +1,5 @@
 {
-    "cmake.sourceDirectory": "${workspaceFolder}/source",
+    "cmake.sourceDirectory": "${workspaceFolder}/src/native",
     "cmake.additionalKits": [
         "${workspaceFolder}/.vscode/cmake-kits.json"
     ],

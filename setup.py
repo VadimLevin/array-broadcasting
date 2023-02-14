@@ -194,22 +194,13 @@ class CMakeBuild(build_ext):
         )
 
 
-PACKAGE_NAME = 'nope'
+if __name__ == '__main__':
+    PACKAGE_NAME = 'nope'
 
-setup(
-    name=PACKAGE_NAME,
-    version='0.0.1',
-    author='Vadim Levin',
-    author_email='vadim.levin@xperience.ai',
-    description='Simple Tensor implementation',
-    ext_modules=[
-        CMakeExtension(f'{PACKAGE_NAME}._{PACKAGE_NAME}', './source')
-    ],
-    cmdclass={'build_ext': CMakeBuild},
-    zip_safe=False,
-    extras_require={
-        'test': ('pytest>=7.2.0',)
-    },
-    python_requires='>=3.8',
-    packages=[PACKAGE_NAME]
-)
+    setup(
+        name=PACKAGE_NAME,
+        ext_modules=[
+            CMakeExtension(f'{PACKAGE_NAME}._{PACKAGE_NAME}', './src/native')
+        ],
+        cmdclass={'build_ext': CMakeBuild},
+    )
