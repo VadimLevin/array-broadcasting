@@ -23,6 +23,11 @@ pybind11_add_module(nope)
 
 set_target_properties(nope
     PROPERTIES
+        LIBRARY_OUTPUT_NAME _nope
+)
+
+set_target_properties(nope
+    PROPERTIES
         CXX_STANDARD          17
         CXX_EXTENSIONS        OFF
         CXX_STANDARD_REQUIRED ON

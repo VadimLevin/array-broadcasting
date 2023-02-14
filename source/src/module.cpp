@@ -239,7 +239,7 @@ namespace py = pybind11;
 //     py::pybind11_fail("Unsupported dtype");
 // }
 
-PYBIND11_MODULE(nope, nope_module) {
+PYBIND11_MODULE(_nope, nope_module) {
     nope_module.def(
         "broadcast_shapes",
         [](const std::vector<std::vector<int64_t>>& shapes) -> std::vector<int64_t> {
