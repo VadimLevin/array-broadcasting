@@ -11,7 +11,7 @@ endif()
 
 # Semantic versioning is used https://semver.org
 project(nope
-    VERSION 0.0.0
+    VERSION 0.0.1
     LANGUAGES CXX
 )
 
