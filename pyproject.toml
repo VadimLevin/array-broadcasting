@@ -23,7 +23,7 @@ classifiers = [
 [build-system]
 requires = [
     "wheel",
-    "setuptools >= 58",
+    "setuptools >= 64",
     "cmake >= 3.11",
     "pybind11[global] >= 2.10.1"
 ]
